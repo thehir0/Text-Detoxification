@@ -1,4 +1,8 @@
 .DS_Store
 .DS_Store?
 
-filtered.tsv
+*.tsv
+*.csv
+*.pt
+*.model
+*.pyc
