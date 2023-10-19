@@ -138,6 +138,46 @@ def do_cola_eval_transformers(args, preds, soft=False):
                 results.append((out > 0.5).astype(int))
     return np.concatenate(results)
 
+from typing import Tuple
+def calculate_metric(inputs: list, preds: list) -> Tuple[float, float, float, float]:
+    parser = argparse.ArgumentParser()
+    
+    parser.add_argument("--classifier_path", default='SkolkovoInstitute/roberta_toxicity_classifier')
+    parser.add_argument("--threshold", default=0.8, type=float)
+
+    parser.add_argument("--cola_classifier_path", default='models/cola')
+    parser.add_argument("--cola_checkpoint", default='checkpoint_best.pt')
+    parser.add_argument("--batch_size", default=32, type=int)
+
+    args = parser.parse_args()
+
+    # accuracy of style transfer
+    accuracy_by_sent = classify_preds(args, preds)
+    accuracy = sum(accuracy_by_sent)/len(preds)
+    cleanup()
+    
+    # similarity
+    bleu = calc_bleu(inputs, preds)
+    
+    similarity_by_sent = wieting_sim(args, inputs, preds)
+    avg_sim_by_sent = similarity_by_sent.mean()
+    cleanup()
+    
+    # fluency
+    cola_stats = do_cola_eval(args, preds)
+    cola_acc = sum(cola_stats) / len(preds)
+    cleanup()
+    
+    # count metrics
+    joint = sum(accuracy_by_sent * similarity_by_sent * cola_stats) / len(preds)
+    
+    # write res to table
+    name = args.preds.split('/')[-1]
+    print('| Model | ACC | SIM | FL | J | BLEU |\n')
+    print('| ----- | --- | --- | -- | - | ---- |\n')
+    print(f'{name}|{accuracy:.4f}|{avg_sim_by_sent:.4f}|{cola_acc:.4f}|{joint:.4f}|{bleu:.4f}|\n')
+    return accuracy, avg_sim_by_sent, cola_acc, joint, bleu
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

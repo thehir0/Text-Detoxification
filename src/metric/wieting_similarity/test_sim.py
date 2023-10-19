@@ -6,11 +6,14 @@ import sentencepiece as spm
 
 tok = TreebankWordTokenizer()
 
-model = torch.load('src/metric/model/sim.pt')
+model = torch.load('src/metric/model/sim.pt', map_location=torch.device('cpu'))
 state_dict = model['state_dict']
 vocab_words = model['vocab_words']
 args = model['args']
+
 # turn off gpu
+args.gpu = -1
+
 model = WordAveraging(args, vocab_words)
 model.load_state_dict(state_dict, strict=True)
 sp = spm.SentencePieceProcessor()
@@ -34,6 +37,6 @@ def find_similarity(s1, s2):
         scores = model.scoring_function(wx1, wm1, wl1, wx2, wm2, wl2)
         return [x.item() for x in scores]
 
-s1 = "the dog ran outsideddd."
+s1 = "the dog ran outside."
 s2 = "the puppy escape into the trees."
 print(find_similarity([s1, s2], [s2, s2]))
