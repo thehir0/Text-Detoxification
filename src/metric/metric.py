@@ -140,7 +140,7 @@ def do_cola_eval_transformers(args, preds, soft=False):
     return np.concatenate(results)
 
 class Arguments:
-    def __init__(self, cola_classifier_path='models/cola', classifier_path='SkolkovoInstitute/roberta_toxicity_classifier', threshold=0.8, cola_checkpoint='checkpoint_best.pt', batch_size=32) -> None:
+    def __init__(self, cola_classifier_path='../src/metric/models/cola', classifier_path='SkolkovoInstitute/roberta_toxicity_classifier', threshold=0.8, cola_checkpoint='checkpoint_best.pt', batch_size=32) -> None:
         self.cola_classifier_path = cola_classifier_path
         self.classifier_path = classifier_path
         self.threshold = threshold

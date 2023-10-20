@@ -6,7 +6,7 @@ import sentencepiece as spm
 
 tok = TreebankWordTokenizer()
 
-model = torch.load('src/metric/model/sim.pt', map_location=torch.device('cpu'))
+model = torch.load('src/metric/models/sim.pt', map_location=torch.device('cpu'))
 state_dict = model['state_dict']
 vocab_words = model['vocab_words']
 args = model['args']
@@ -17,7 +17,7 @@ args.gpu = -1
 model = WordAveraging(args, vocab_words)
 model.load_state_dict(state_dict, strict=True)
 sp = spm.SentencePieceProcessor()
-sp.Load('src/metric/model/sim.sp.30k.model')
+sp.Load('src/metric/models/sim.sp.30k.model')
 model.eval()
 
 def make_example(sentence, model):
