@@ -15,8 +15,8 @@ import sentencepiece as spm
 class SimilarityEvaluator:
     def __init__(
         self,
-        model_path='models/sim/sim.pt',
-        tokenizer_path='models/sim/sim.sp.30k.model',
+        model_path='../src/metric/model/sim.pt',
+        tokenizer_path='../src/metric/model/sim.sp.30k.model',
         gpu=False
     ):
         self.model_path = model_path
