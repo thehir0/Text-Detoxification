@@ -69,18 +69,30 @@ def wieting_sim(inputs, preds, batch_size):
     return np.array(sim_scores)
 
 
-def do_cola_eval(preds):
+def do_cola_eval(preds, batch_size):
     print('Calculating CoLA acceptability stats')
 
     model_name = "cointegrated/roberta-large-cola-krishna2020"
     model = AutoModelForSequenceClassification.from_pretrained(model_name)
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     outputs = []
-    for pred in preds:
-        input_ids = tokenizer.encode(pred, add_special_tokens=True, return_tensors="pt")
+
+    # Process predictions in batches
+    for i in tqdm.tqdm(range(0, len(preds), batch_size)):
+        batch_preds = preds[i:i+batch_size]  # Get a batch of predictions
+
+        # Tokenize the batch of predictions
+        batch_input_ids = tokenizer.batch_encode_plus(
+            batch_preds, add_special_tokens=True, return_tensors="pt", padding=True
+        )
+
         with torch.no_grad():
-            logits = model(input_ids).logits
-            outputs.append(torch.argmax(logits, dim=1).item())
+            # Ensure the batch size is not 0 (e.g., for the last batch)
+            if batch_input_ids.input_ids.shape[0] > 0:
+                batch_logits = model(batch_input_ids.input_ids).logits
+                batch_outputs = torch.argmax(batch_logits, dim=1).tolist()
+                outputs.extend(batch_outputs)
+
     return np.array(outputs)
 
 
@@ -99,7 +111,7 @@ def calculate_metric(inputs: list, preds: list, batch_size=32) -> Tuple[float, f
     cleanup()
     
     # fluency
-    cola_stats = do_cola_eval(preds)
+    cola_stats = do_cola_eval(preds, batch_size)
     cola_acc = sum(cola_stats) / len(preds)
     cleanup()
     
@@ -107,7 +119,7 @@ def calculate_metric(inputs: list, preds: list, batch_size=32) -> Tuple[float, f
     joint = sum(accuracy_by_sent * similarity_by_sent * cola_stats) / len(preds)
     
     # write res to table
-    print('| ACC | SIM | FL | J | BLEU |\n')
-    print('| --- | --- | -- | - | ---- |\n')
+    print('| ACC | SIM |  FL  |   J   | BLEU |\n')
+    print('| --- | --- | ---- |  ---  | ---- |\n')
     print(f'|{accuracy:.4f}|{avg_sim_by_sent:.4f}|{cola_acc:.4f}|{joint:.4f}|{bleu:.4f}|\n')
     return accuracy, avg_sim_by_sent, cola_acc, joint, bleu
