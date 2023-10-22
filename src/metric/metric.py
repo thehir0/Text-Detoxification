@@ -20,17 +20,19 @@ def cleanup():
         torch.cuda.empty_cache()
 
 
-def classify_preds(preds, batch_size, soft=False, threshold=0.8):
+
+def classify_preds(preds, device, batch_size, soft=False, threshold=0.8):
     print('Calculating style of predictions')
     results = []
 
     model_name = 'SkolkovoInstitute/roberta_toxicity_classifier'
 
     tokenizer = RobertaTokenizer.from_pretrained(model_name)
-    model = RobertaForSequenceClassification.from_pretrained(model_name)
+    model = RobertaForSequenceClassification.from_pretrained(model_name).to(device)
 
     for i in tqdm.tqdm(range(0, len(preds), batch_size)):
         batch = tokenizer(preds[i:i + batch_size], return_tensors='pt', padding=True)
+        batch = {key: value.to(device) for key, value in batch.items()}  # Move the batch to the same device as the model
         with torch.inference_mode():
             logits = model(**batch).logits
         if soft:
@@ -39,6 +41,7 @@ def classify_preds(preds, batch_size, soft=False, threshold=0.8):
             result = (logits[:, 1] > threshold).cpu().numpy()
         results.extend([1 - item for item in result])
     return results
+
 
 
 def calc_bleu(inputs, preds):
@@ -69,11 +72,11 @@ def wieting_sim(inputs, preds, batch_size):
     return np.array(sim_scores)
 
 
-def do_cola_eval(preds, batch_size):
+def do_cola_eval(preds, device, batch_size):
     print('Calculating CoLA acceptability stats')
 
     model_name = "cointegrated/roberta-large-cola-krishna2020"
-    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(model_name).to(device)
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     outputs = []
 
@@ -86,10 +89,12 @@ def do_cola_eval(preds, batch_size):
             batch_preds, add_special_tokens=True, return_tensors="pt", padding=True
         )
 
+        batch_input_ids = {key: value.to(device) for key, value in batch_input_ids.items()}
+
         with torch.no_grad():
             # Ensure the batch size is not 0 (e.g., for the last batch)
-            if batch_input_ids.input_ids.shape[0] > 0:
-                batch_logits = model(batch_input_ids.input_ids).logits
+            if batch_input_ids["input_ids"].shape[0] > 0:
+                batch_logits = model(batch_input_ids["input_ids"]).logits
                 batch_outputs = torch.argmax(batch_logits, dim=1).tolist()
                 outputs.extend(batch_outputs)
 
@@ -97,9 +102,11 @@ def do_cola_eval(preds, batch_size):
 
 
 def calculate_metric(inputs: list, preds: list, batch_size=32) -> Tuple[float, float, float, float]:
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f'running on {device}')
 
     # accuracy of style transfer
-    accuracy_by_sent = classify_preds(preds, batch_size=batch_size)
+    accuracy_by_sent = classify_preds(preds, device, batch_size)
     accuracy = sum(accuracy_by_sent)/len(preds)
     cleanup()
     
@@ -111,7 +118,7 @@ def calculate_metric(inputs: list, preds: list, batch_size=32) -> Tuple[float, f
     cleanup()
     
     # fluency
-    cola_stats = do_cola_eval(preds, batch_size)
+    cola_stats = do_cola_eval(preds, device, batch_size)
     cola_acc = sum(cola_stats) / len(preds)
     cleanup()
     
