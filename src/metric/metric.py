@@ -129,4 +129,4 @@ def calculate_metric(inputs: list, preds: list, batch_size=32) -> Tuple[float, f
     print('| ACC | SIM |  FL  |   J   | BLEU |\n')
     print('| --- | --- | ---- |  ---  | ---- |\n')
     print(f'|{accuracy:.4f}|{avg_sim_by_sent:.4f}|{cola_acc:.4f}|{joint:.4f}|{bleu:.4f}|\n')
-    return accuracy, avg_sim_by_sent, cola_acc, joint, bleu
+    return {'ACC': accuracy, 'SIM': avg_sim_by_sent, 'FL': cola_acc, 'J': joint, 'BLUE':bleu}
