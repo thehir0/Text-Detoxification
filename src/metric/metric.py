@@ -7,7 +7,7 @@ from typing import Tuple
 from nltk.translate.bleu_score import sentence_bleu
 from tqdm.auto import trange
 
-from wieting_similarity.similarity_evaluator import SimilarityEvaluator
+from src.metric.wieting_similarity.similarity_evaluator import SimilarityEvaluator
 
 
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, \
@@ -88,15 +88,14 @@ def do_cola_eval(preds, device, batch_size):
         batch_input_ids = tokenizer.batch_encode_plus(
             batch_preds, add_special_tokens=True, return_tensors="pt", padding=True
         )
-
         batch_input_ids = {key: value.to(device) for key, value in batch_input_ids.items()}
 
         with torch.no_grad():
             # Ensure the batch size is not 0 (e.g., for the last batch)
             if batch_input_ids["input_ids"].shape[0] > 0:
-                batch_logits = model(batch_input_ids["input_ids"]).logits
-                batch_outputs = torch.argmax(batch_logits, dim=1).tolist()
-                outputs.extend(batch_outputs)
+                batch_logits = model(**batch_input_ids).logits
+                batch_logits = [x[0].cpu() for x in torch.softmax(batch_logits, dim=1)]
+                outputs.extend(batch_logits)
 
     return np.array(outputs)
 
