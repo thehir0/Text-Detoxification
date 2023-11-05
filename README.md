@@ -22,7 +22,7 @@
   </p>
 </div>
 
-## About the prooject
+## About the project
 Text detoxification refers to the process of cleansing or purifying text content to make it more suitable for various purposes, such as enhancing readability, removing offensive or harmful language, or preparing data for natural language processing tasks. This can involve tasks like profanity filtering, content summarization, paraphrasing, or even removing irrelevant information. Text detoxification is crucial for creating a more inclusive and respectful online environment, as well as for improving the quality of text-based data used in machine learning models, sentiment analysis, and other language processing applications. It plays a vital role in ensuring that text content is both safe and effective in achieving its intended goals.
 
 ```
@@ -67,6 +67,18 @@ The base architecture of PEGASUS is a standard Transformer encoder-decoder.In PE
 
 ![A self-supervised example for PEGASUS during pre-training. The model is trained to output all the masked sentences.](https://1.bp.blogspot.com/-TSor4o51jGI/Xt50lkj6blI/AAAAAAAAGDs/TrDe9jv13WEwk9NQNebQL63jtY8n6JFGwCLcBGAsYHQ/s1600/image1.gif)
 A self-supervised example for PEGASUS during pre-training. The model is trained to output all the masked sentences.
+
+## Examples
+
+| Original                                | Pegasus fine-tuned for detoxification |
+|-----------------------------------------|---------------------------------------|
+| You're in a titty bar.                  | you're in a bar.                      |
+| I just want a glass of water. Oh, shit! | I just want a glass of water.         |
+| We have a big fuckin' problem.          | we have a big problem.                |
+| Some freak just sent me this.           | someone sent me this.                 |
+| I knew this shit was gonna happen.      | I knew it was going to happen.        |
+
+## How to start
 
 How to run inference:
 
