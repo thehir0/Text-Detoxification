@@ -63,7 +63,7 @@ text-detoxification
         └── visualize.py
 ```
 
-## Model
+## Best Model
 
 The base architecture of PEGASUS is a standard Transformer encoder-decoder.In PEGASUS, the model generates important sentences that have been removed or masked from an input document as a unified output sequence. This process resembles the extraction of key content, similar to an extractive summary
 
@@ -71,7 +71,7 @@ The base architecture of PEGASUS is a standard Transformer encoder-decoder.In PE
 ![A self-supervised example for PEGASUS during pre-training. The model is trained to output all the masked sentences.](https://1.bp.blogspot.com/-TSor4o51jGI/Xt50lkj6blI/AAAAAAAAGDs/TrDe9jv13WEwk9NQNebQL63jtY8n6JFGwCLcBGAsYHQ/s1600/image1.gif)
 A self-supervised example for PEGASUS during pre-training. The model is trained to output all the masked sentences.
 
-Model checkpoints are loaded to huggingface:
+Models checkpoints are loaded to huggingface:
 <div align="center">
   
 [t5-small-detoxify](https://huggingface.co/the-hir0/t5-small-detoxify)
