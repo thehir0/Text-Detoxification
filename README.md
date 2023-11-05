@@ -9,7 +9,7 @@ text-detoxification
 ├── data 
 │   ├── external # Data from third party sources
 │   ├── interim  # Intermediate data that has been transformed.
-│   └── raw      # The original, immutable data
+│   └── raw      # The original, immutable data, *ATTACHED TO RELEASE
 │
 ├── models       # Trained and serialized models, final checkpoints
 │
