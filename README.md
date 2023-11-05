@@ -1,6 +1,5 @@
 # Text-Detoxification
 Text Detoxification Task is a process of transforming the text with toxic style into the text with the same meaning but with neutral style
-
 The structure of the repository:
 
 ```
@@ -37,3 +36,11 @@ text-detoxification
     └── visualization   # Scripts to create exploratory and results oriented visualizations
         └── visualize.py
 ```
+How to run inference:
+
+`python src/models/predict_model.py --input 'my nigga is best friend'`
+
+How to train models:
+
+`python src/models/train_model.py --batch_size=32 --lr=0.01 --wd=0.01 --stl=1 --model 'models/pegasus-best'`
+
