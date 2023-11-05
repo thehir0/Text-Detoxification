@@ -68,6 +68,16 @@ The base architecture of PEGASUS is a standard Transformer encoder-decoder.In PE
 ![A self-supervised example for PEGASUS during pre-training. The model is trained to output all the masked sentences.](https://1.bp.blogspot.com/-TSor4o51jGI/Xt50lkj6blI/AAAAAAAAGDs/TrDe9jv13WEwk9NQNebQL63jtY8n6JFGwCLcBGAsYHQ/s1600/image1.gif)
 A self-supervised example for PEGASUS during pre-training. The model is trained to output all the masked sentences.
 
+Model checkpoints are loaded to huggingface:
+<div align="center">
+  
+[t5-small-detoxify](https://huggingface.co/the-hir0/t5-small-detoxify)
+
+[pegasus-detoxify](https://huggingface.co/the-hir0/pegasus-detoxify)
+
+<img src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.png" alt="Logo" width="200" height="200">
+</div>
+
 ## Examples
 
 | Original                                | Pegasus fine-tuned for detoxification |
@@ -86,5 +96,5 @@ How to run inference:
 
 How to train models:
 
-`python src/models/train_model.py --batch_size=32 --lr=0.01 --wd=0.01 --stl=1 --model 'models/pegasus-best'`
+`python src/models/train_model.py --batch_size=32 --lr=0.01 --wd=0.01 --stl=1 --model 'the-hir0/pegasus-detoxify'`
 
