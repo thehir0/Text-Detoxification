@@ -8,6 +8,8 @@
   </a>
 
   <h1 align="center">Text detoxification</h1>
+  <h3 align="center">Almaz Dautov, Innopolis University</h3>
+  <h3 align="center">DS21-02, a.dautov@innopolis.university</h3>
 
   <p align="center">
         Transforming the text with toxic style into the text with the same meaning but with neutral style
