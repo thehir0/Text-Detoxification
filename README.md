@@ -25,6 +25,7 @@
 ## About the project
 Text detoxification refers to the process of cleansing or purifying text content to make it more suitable for various purposes, such as enhancing readability, removing offensive or harmful language, or preparing data for natural language processing tasks. This can involve tasks like profanity filtering, content summarization, paraphrasing, or even removing irrelevant information. Text detoxification is crucial for creating a more inclusive and respectful online environment, as well as for improving the quality of text-based data used in machine learning models, sentiment analysis, and other language processing applications. It plays a vital role in ensuring that text content is both safe and effective in achieving its intended goals.
 
+## Repository structure
 ```
 text-detoxification
 ├── README.md # The top-level README
@@ -92,7 +93,7 @@ Model checkpoints are loaded to huggingface:
 
 How to run inference:
 
-`python src/models/predict_model.py --input 'my nigga is best friend'`
+`python src/models/predict_model.py --input 'example of toxic sentence'`
 
 How to train models:
 
