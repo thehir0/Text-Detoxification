@@ -1,6 +1,29 @@
-# Text-Detoxification
-Text Detoxification Task is a process of transforming the text with toxic style into the text with the same meaning but with neutral style
-The structure of the repository:
+![Static Badge](https://img.shields.io/badge/LICENSE-MIT-green?link=https%3A%2F%2Fgithub.com%2FSpeedFireF%2FSMB%2Fblob%2Fmain%2FLICENSE)
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/othneildrew/Best-README-Template">
+   
+  </a>
+
+  <h1 align="center">Text detoxification</h1>
+
+  <p align="center">
+        Transforming the text with toxic style into the text with the same meaning but with neutral style
+    <br />
+    <a href="https://github.com/thehir0/Text-Detoxification"><strong>Explore the docs »</strong></a>
+     ·
+    <a href="https://docs.google.com/document/d/1U4zRcRL26EFCTSfbTOdD8aJ2srpwPO2wwZLsdOKzUok/edit?usp=sharing"><strong>Check Project building report »</strong></a>
+      ·
+    <a href="https://docs.google.com/document/d/1rClSrcpUB6jXCL_HoIlxYy_BZhv-AaFkyKIn0_9XHik/edit?usp=sharing"><strong>Check Project final report »</strong></a>
+    <br />
+  </p>
+  </p>
+</div>
+
+## About the prooject
+Text detoxification refers to the process of cleansing or purifying text content to make it more suitable for various purposes, such as enhancing readability, removing offensive or harmful language, or preparing data for natural language processing tasks. This can involve tasks like profanity filtering, content summarization, paraphrasing, or even removing irrelevant information. Text detoxification is crucial for creating a more inclusive and respectful online environment, as well as for improving the quality of text-based data used in machine learning models, sentiment analysis, and other language processing applications. It plays a vital role in ensuring that text content is both safe and effective in achieving its intended goals.
 
 ```
 text-detoxification
@@ -36,6 +59,15 @@ text-detoxification
     └── visualization   # Scripts to create exploratory and results oriented visualizations
         └── visualize.py
 ```
+
+## Model
+
+The base architecture of PEGASUS is a standard Transformer encoder-decoder.In PEGASUS, the model generates important sentences that have been removed or masked from an input document as a unified output sequence. This process resembles the extraction of key content, similar to an extractive summary
+
+
+![A self-supervised example for PEGASUS during pre-training. The model is trained to output all the masked sentences.](https://1.bp.blogspot.com/-TSor4o51jGI/Xt50lkj6blI/AAAAAAAAGDs/TrDe9jv13WEwk9NQNebQL63jtY8n6JFGwCLcBGAsYHQ/s1600/image1.gif)
+A self-supervised example for PEGASUS during pre-training. The model is trained to output all the masked sentences.
+
 How to run inference:
 
 `python src/models/predict_model.py --input 'my nigga is best friend'`
