@@ -1,9 +1,8 @@
 *.DS_Store
 *.DS_Store?
-
+models/pegasus-best
+models/t5-small-best
 *.tsv
-*.pt
-*.model
 *.pyc
 *.idx
 *.bin
